@@ -15,7 +15,7 @@ namespace Sudoku
     bool solveSingleGrid(SudokuGrid& grid, bool verbose)
     {
         long int start_time = currentTimeInMilliseconds();
-        int groundTruthArr[N_GRID_CELLS];
+        ValueInt groundTruthArr[N_GRID_CELLS];
         grid.putValuesIntoArray(groundTruthArr);
 
         grid.solve();

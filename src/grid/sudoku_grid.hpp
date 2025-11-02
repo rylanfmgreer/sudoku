@@ -3,12 +3,30 @@
 #define _SUDOKU_GRID_HPP_
 
 #include <vector>
+#include <memory>
 
 namespace Sudoku
 {
+    struct SudokuGridNextEmptyCellHelper
+    {
+        std::size_t next_empty_row;
+        std::size_t next_empty_col;
+    };
+
+    struct SudokuGridPossibleValuesHelper
+    {
+        bool seen[9];
+        bool possible_values[9];
+        bool there_is_only_one_possible_value;
+        int single_possible_value;
+    };
+
     const int N_GRID_CELLS = 81;
     const int GRID_ROW_SIZE = 9;
-    typedef int* grid;
+    typedef short int IndexInt;
+    typedef short int ValueInt;
+    typedef ValueInt* Grid;
+
 
     class SudokuGrid
     {
@@ -21,54 +39,50 @@ namespace Sudoku
 
         // key function to solve the sudoku
         void solve();
-        bool isSolved();
+        bool isSolved() const;
         void print() const;
-        void printWithGroundTruth(int* groundTruth) const;
+        void printWithGroundTruth(Grid groundTruth) const;
 
         // accessors
-        int& get(int r, int c) const;
-        int& operator()(int r, int c) const { return get(r, c); }
-        void set(int r, int c, int val);
+        inline ValueInt& get(IndexInt r, IndexInt c) const { return m_grid[r * GRID_ROW_SIZE + c]; }
+        inline ValueInt& operator()(IndexInt r, IndexInt c) const { return get(r, c); }
+        inline void set(IndexInt r, IndexInt c, ValueInt val) { m_grid[r * GRID_ROW_SIZE + c] = val; }
 
         // utilities that may be useful externally
-        void putValuesIntoArray(int* outputArr) const;
-
+        void putValuesIntoArray(ValueInt* outputArr) const;
 
         private:
-        grid m_grid;
-        std::vector<SudokuGrid> getNextGrids(int r=-1, int c=-1);
-        std::vector<SudokuGrid> helperGetNextGrids(int r=-1, int c=-1);
-
-
-        int m_next_empty_row;
-        int m_next_empty_col;
-        void findNextEmptyCell();
-
+        Grid m_grid;
+        std::vector<SudokuGrid> getNextGrids(IndexInt r=-1, IndexInt c=-1) const;
+        std::vector<SudokuGrid> helperGetNextGrids(IndexInt r=-1, IndexInt c=-1) const;
+        void findNextEmptyCell() const;
         void copyFrom(const SudokuGrid& other);
 
         // helpers for checking
         bool m_seen[9];
-        bool thisRowIsLegal(int r);
-        bool allRowsAreLegal();
-        bool thisColumnIsLegal(int c);
-        bool allColumnsAreLegal();
-        bool thisSquareIsLegal(int r, int c);
-        bool allSquaresAreLegal();
-        bool thisGridIsLegal(int r, int c);
-        bool totalGridIsLegal();
-        void clearSeen();
+        bool thisRowIsLegal(IndexInt r) const;
+        bool allRowsAreLegal() const;
+        bool thisColumnIsLegal(IndexInt c) const;
+        bool allColumnsAreLegal() const;
+        bool thisSquareIsLegal(IndexInt r, IndexInt c) const;
+        bool allSquaresAreLegal() const;
+        bool totalGridIsLegal() const;
+        bool thisGridIsLegal(IndexInt r, IndexInt c) const;
+        void clearSeen() const;
         bool noZeroEntriesInThisGrid() const;
 
         void determineIfThereIsASinglePossibleValueAndSaveIt();
-        bool m_there_is_only_one_possible_value;
-        int m_single_possible_value;
+
 
         // deduction algorithms
         // currently only the simple one is implemented, but more can be added later
-        bool m_possible_values[9];
         void applyAllDeductiveReasoning();
         void easyWins();
-        void getPossibleValuesForEasyWins(int r, int c);
+        void getPossibleValuesForEasyWins(IndexInt r, IndexInt c) const;
+
+        // we consider a function const even if it modifies these data in these helpers
+        std::shared_ptr<SudokuGridNextEmptyCellHelper> m_next_empty_cell_helper;
+        std::shared_ptr<SudokuGridPossibleValuesHelper> m_possible_values_helper;
     };
 
 } // namespace Sudoku

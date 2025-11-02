@@ -26,10 +26,10 @@ namespace Sudoku
                 return;
             }
         }
-        return; // return an empty grid if no solution found
+        return; // return an empty Grid if no solution found
     }
 
-    std::vector<SudokuGrid> SudokuGrid::helperGetNextGrids(int r, int c)
+    std::vector<SudokuGrid> SudokuGrid::helperGetNextGrids(IndexInt r, IndexInt c) const
     {
         /*
             This function generates all possible next grids by trying all possible values
@@ -38,9 +38,9 @@ namespace Sudoku
         std::vector<SudokuGrid> next_grids;
         next_grids.reserve(9);
         getPossibleValuesForEasyWins(r, c);
-        for(int val = 1; val <= 9; ++val)
+        for(IndexInt val = 1; val <= 9; ++val)
         {
-            if(!m_possible_values[val - 1])
+            if(!m_possible_values_helper->possible_values[val - 1])
                 continue;
             else
             {
@@ -52,35 +52,36 @@ namespace Sudoku
         return next_grids;
     }
 
-    void SudokuGrid::findNextEmptyCell()
+    void SudokuGrid::findNextEmptyCell() const
     {
-        m_next_empty_col = m_next_empty_row = -1;
+        m_next_empty_cell_helper->next_empty_row = -1;
+        m_next_empty_cell_helper->next_empty_col = -1;
         for(int r = 0; r < 9; ++r)
         {
             for(int c = 0; c < 9; ++c)
             {
                 if(get(r, c) == 0)
                 {
-                    m_next_empty_row = r;
-                    m_next_empty_col = c;
+                    m_next_empty_cell_helper->next_empty_row = r;
+                    m_next_empty_cell_helper->next_empty_col = c;
                     return;
                 }
             }
         }
     }
 
-    std::vector<SudokuGrid> SudokuGrid::getNextGrids(int r, int c)
+    std::vector<SudokuGrid> SudokuGrid::getNextGrids(IndexInt r, IndexInt c) const
     {
         if(r == -1 || c == -1)
         {
             SudokuGrid temp_grid(*this);
             temp_grid.findNextEmptyCell();
-            if(temp_grid.m_next_empty_row == -1 || temp_grid.m_next_empty_col == -1)
+            if(temp_grid.m_next_empty_cell_helper->next_empty_row == -1 || temp_grid.m_next_empty_cell_helper->next_empty_col == -1)
             {
                 return std::vector<SudokuGrid>();
             }
-            r = temp_grid.m_next_empty_row;
-            c = temp_grid.m_next_empty_col;
+            r = temp_grid.m_next_empty_cell_helper->next_empty_row;
+            c = temp_grid.m_next_empty_cell_helper->next_empty_col;
         }
         return helperGetNextGrids(r, c);
     }

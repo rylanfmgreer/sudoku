@@ -1,24 +1,25 @@
 #include "sudoku_grid.hpp"
+#include "other_utils.hpp"
 #include <algorithm>
 #include <iostream>
 #include <chrono>
 #include <fstream>
-
+#include <string>
 
 
 namespace Sudoku
 {
-    std::ostream& boldAndBlueText(std::ostream& os)
+    std::ostream& groundTruthTextMode(std::ostream& os)
     {
-        return os << "\e[1;34m";
+        return os << boldBlueTextCode;
     }
 
     std::ostream& normalText(std::ostream& os)
     {
-        return os << "\e[0m";
+        return os << normalTextCode;
     }
 
-    void SudokuGrid::putValuesIntoArray(int* outputArr) const
+    void SudokuGrid::putValuesIntoArray(Grid outputArr) const
     {
         std::copy(m_grid, m_grid + N_GRID_CELLS, outputArr);
     }
@@ -35,7 +36,7 @@ namespace Sudoku
         }
     }
 
-    void SudokuGrid::printWithGroundTruth(int* groundTruth) const
+    void SudokuGrid::printWithGroundTruth(ValueInt* groundTruth) const
     {
     
         /*
@@ -44,7 +45,7 @@ namespace Sudoku
         are printed in bold.
         There are also pipes to indicate 3x3 subgrid boundaries for better readability.
         */
-        auto makeOutputBold = []() { std::cout << boldAndBlueText; };
+        auto makeOutputBold = []() { std::cout << groundTruthTextMode; };
         auto makeOutputNotBold = []() { std::cout << normalText; };
         std::cout << std::endl;
         for(int r = 0; r < 9; ++r)
@@ -63,15 +64,16 @@ namespace Sudoku
             std::cout << std::endl;
             if(r == 2 || r == 5)
             {
-                std::cout << "---------------------" << std::endl;
+                std::cout << lineSeparator << lineBreak;
             }
         }
-        std::cout << std::endl;
+        std::cout << lineBreak;
     }
 
-    void SudokuGrid::clearSeen()
+    void SudokuGrid::clearSeen() const
     {
-        std::fill(m_seen, m_seen + 9, false);
+        std::fill(m_possible_values_helper->seen,
+            m_possible_values_helper->seen + 9, false);
     }
 
     void SudokuGrid::copyFrom(const SudokuGrid& other)

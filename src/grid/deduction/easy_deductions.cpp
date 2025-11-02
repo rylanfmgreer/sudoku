@@ -5,7 +5,7 @@ namespace Sudoku
     void SudokuGrid::easyWins()
     {
         /*
-        This function fills in easy wins for the Sudoku grid by looking for cells
+        This function fills in easy wins for the Sudoku Grid by looking for cells
         that have only one possible value and assigning that value to the cell.
         */
         bool progress = true;
@@ -20,9 +20,9 @@ namespace Sudoku
                     {
                         getPossibleValuesForEasyWins(r, c);
                         determineIfThereIsASinglePossibleValueAndSaveIt();
-                        if(m_there_is_only_one_possible_value)
+                        if(m_possible_values_helper->there_is_only_one_possible_value)
                         {
-                            set(r, c, m_single_possible_value);
+                            set(r, c, m_possible_values_helper->single_possible_value);
                             progress = true;
                         }
                     }
@@ -32,9 +32,11 @@ namespace Sudoku
     }
 
 
-    void SudokuGrid::getPossibleValuesForEasyWins(int r, int c)
+    void SudokuGrid::getPossibleValuesForEasyWins(IndexInt r, IndexInt c) const
     {
-        std::fill(m_possible_values, m_possible_values + 9, true);
+        std::fill(m_possible_values_helper->possible_values,
+            m_possible_values_helper->possible_values + 9,
+            true);
 
         // check the row
         for(int col = 0; col < 9; ++col)
@@ -42,7 +44,7 @@ namespace Sudoku
             int val = get(r, col);
             if(val != 0)
             {
-                m_possible_values[val - 1] = false;
+                m_possible_values_helper->possible_values[val - 1] = false;
             }
         }
 
@@ -52,7 +54,7 @@ namespace Sudoku
             int val = get(row, c);
             if(val != 0)
             {
-                m_possible_values[val - 1] = false;
+                m_possible_values_helper->possible_values[val - 1] = false;
             }
         }
 
@@ -66,7 +68,7 @@ namespace Sudoku
                 int val = get(start_row + dr, start_col + dc);
                 if(val != 0)
                 {
-                    m_possible_values[val - 1] = false;
+                    m_possible_values_helper->possible_values[val - 1] = false;
                 }
             }
         }
@@ -74,20 +76,20 @@ namespace Sudoku
 
     void SudokuGrid::determineIfThereIsASinglePossibleValueAndSaveIt()
     {
-        m_there_is_only_one_possible_value = false;
-        m_single_possible_value = -1;
+        m_possible_values_helper->there_is_only_one_possible_value = false;
+        m_possible_values_helper->single_possible_value = -1;
         int count = 0;
-        for(int val = 1; val <= 9; ++val)
+        for(IndexInt val = 1; val <= 9; ++val)
         {
-            if(m_possible_values[val - 1])
+            if(m_possible_values_helper->possible_values[val - 1])
             {
                 ++count;
-                m_single_possible_value = val;
+                m_possible_values_helper->single_possible_value = val;
             }
         }
         if(count == 1)
         {
-            m_there_is_only_one_possible_value = true;
+            m_possible_values_helper->there_is_only_one_possible_value = true;
         }
     }
     

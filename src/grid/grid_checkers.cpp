@@ -2,12 +2,12 @@
 
 namespace Sudoku
 {
-    bool SudokuGrid::isSolved()
+    bool SudokuGrid::isSolved() const
     {
         return noZeroEntriesInThisGrid() && totalGridIsLegal();
     }
-    
-    bool SudokuGrid::thisGridIsLegal(int r, int c)
+
+    bool SudokuGrid::thisGridIsLegal(IndexInt r, IndexInt c) const
     {
         return thisRowIsLegal(r) && thisColumnIsLegal(c) && thisSquareIsLegal(r, c);
     }
@@ -21,7 +21,7 @@ namespace Sudoku
         }
         return true;
     }
-    bool SudokuGrid::thisRowIsLegal(int r)
+    bool SudokuGrid::thisRowIsLegal(IndexInt r) const
     {
         clearSeen();
         for(int idx = r * GRID_ROW_SIZE; idx < (r + 1) * GRID_ROW_SIZE; ++idx)
@@ -31,12 +31,12 @@ namespace Sudoku
                 continue; // skip empty cells
             if(m_seen[val - 1])
                 return false;
-            m_seen[val - 1] = true;
+            m_possible_values_helper->possible_values[val - 1] = true;
         }
         return true;
     }
 
-    bool SudokuGrid::allRowsAreLegal()
+    bool SudokuGrid::allRowsAreLegal() const
     {
         for(int row = 0; row < 9; ++row)
         {
@@ -46,24 +46,24 @@ namespace Sudoku
         return true;
     }
 
-    bool SudokuGrid::thisColumnIsLegal(int c)
+    bool SudokuGrid::thisColumnIsLegal(IndexInt c) const
     {
         clearSeen();
-        for(int row = 0; row < 9; ++row)
+        for(IndexInt row = 0; row < 9; ++row)
         {
-            int val = m_grid[row * GRID_ROW_SIZE + c];
+            ValueInt val = m_grid[row * GRID_ROW_SIZE + c];
             if(val == 0)
                 continue; // skip empty cells
             if(m_seen[val - 1])
                 return false;
-            m_seen[val - 1] = true;
+            m_possible_values_helper->possible_values[val - 1] = true;
         }
         return true;
     }
 
-    bool SudokuGrid::allColumnsAreLegal()
+    bool SudokuGrid::allColumnsAreLegal() const
     {
-        for(int col = 0; col < 9; ++col)
+        for(IndexInt col = 0; col < 9; ++col)
         {
             if(!thisColumnIsLegal(col))
                 return false;
@@ -71,7 +71,7 @@ namespace Sudoku
         return true;
     }
 
-    bool SudokuGrid::thisSquareIsLegal(int r, int c)
+    bool SudokuGrid::thisSquareIsLegal(IndexInt r, IndexInt c) const
     {
         clearSeen();
         // box_row and box_col are the index of what box we're checking
@@ -86,13 +86,13 @@ namespace Sudoku
                     continue; // skip empty cells
                 if(m_seen[val - 1])
                     return false;
-                m_seen[val - 1] = true;
+                m_possible_values_helper->possible_values[val - 1] = true;
             }
         }
         return true;
     }
 
-    bool SudokuGrid::allSquaresAreLegal()
+    bool SudokuGrid::allSquaresAreLegal() const
     {
         for(int box_row = 0; box_row < 3; ++box_row)
         {
@@ -107,7 +107,7 @@ namespace Sudoku
         return true;
     }
 
-    bool SudokuGrid::totalGridIsLegal()
+    bool SudokuGrid::totalGridIsLegal() const
     {
         return allRowsAreLegal() && allColumnsAreLegal() && allSquaresAreLegal();
     }

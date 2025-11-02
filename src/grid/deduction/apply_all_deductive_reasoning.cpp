@@ -3,7 +3,7 @@ namespace Sudoku
 {
     void SudokuGrid::applyAllDeductiveReasoning()
     {
-        // Apply all known deduction techniques to the grid
+        // Apply all known deduction techniques to the Grid
         easyWins();
     }
 } // namespace Sudoku
