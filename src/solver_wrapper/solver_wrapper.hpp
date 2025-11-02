@@ -5,7 +5,7 @@
 
 namespace Sudoku
 {
-    double current_time();
+    long int current_time();
     bool solve_single_grid(SudokuGrid& grid, bool verbose=true);
     int solve_vector_of_grids(std::vector<SudokuGrid>& grids, bool verbose=true);
     int solve_grids_from_file(const char* filename, bool verbose=true);

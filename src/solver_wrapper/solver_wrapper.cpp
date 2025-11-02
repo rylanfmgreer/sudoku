@@ -5,17 +5,16 @@
 
 namespace Sudoku
 {
-    double current_time()
+    long int current_time()
     {
-        return static_cast<double>(
-            std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        return std::chrono::high_resolution_clock::now().time_since_epoch().count();
     }
 
     bool solve_single_grid(SudokuGrid& grid, bool verbose)
     {
-        double start_time = current_time();
+        long int start_time = current_time();
         grid.solve();
-        double end_time = current_time();
+        long int end_time = current_time();
         if (verbose)
         {
             std::cout << "Grid solved: " << grid.is_solved() << std::endl;
@@ -29,10 +28,10 @@ namespace Sudoku
     int solve_vector_of_grids(std::vector<SudokuGrid>& grids, bool verbose)
     {
         int solved_count = 0;
-        double total_start_time = current_time();
+        long int total_start_time = current_time();
         for(auto& grid : grids)
             solved_count += solve_single_grid(grid, verbose);
-        double total_end_time = current_time();
+        long int total_end_time = current_time();
         if (verbose)
         {
             std::cout << "Total grids solved: " << solved_count << " out of " << grids.size() << std::endl;
