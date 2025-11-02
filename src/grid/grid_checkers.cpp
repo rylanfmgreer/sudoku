@@ -9,18 +9,23 @@ namespace Sudoku
 
     bool SudokuGrid::thisGridIsLegal(IndexInt r, IndexInt c) const
     {
+        clearSeen();
         return thisRowIsLegal(r) && thisColumnIsLegal(c) && thisSquareIsLegal(r, c);
     }
 
     bool SudokuGrid::noZeroEntriesInThisGrid() const
     {
-        for(int idx = 0; idx < N_GRID_CELLS; ++idx)
+        // Check if there are any zero entries in the grid
+        // We start from the back of the grid because in solving, 
+        // we tend to fill in the front first, so zeros are more likely to be at the end
+        for(ValueInt* ptr = m_grid + N_GRID_CELLS - 1; ptr != m_grid; --ptr)
         {
-            if(m_grid[idx] == 0)
+            if(*ptr == 0)
                 return false;
         }
         return true;
     }
+    
     bool SudokuGrid::thisRowIsLegal(IndexInt r) const
     {
         clearSeen();
@@ -29,9 +34,9 @@ namespace Sudoku
             int val = m_grid[idx];
             if(val == 0)
                 continue; // skip empty cells
-            if(m_seen[val - 1])
+            if(m_possible_values_helper->seen[val - 1])
                 return false;
-            m_possible_values_helper->possible_values[val - 1] = true;
+            m_possible_values_helper->seen[val - 1] = true;
         }
         return true;
     }
@@ -54,9 +59,9 @@ namespace Sudoku
             ValueInt val = m_grid[row * GRID_ROW_SIZE + c];
             if(val == 0)
                 continue; // skip empty cells
-            if(m_seen[val - 1])
+            if(m_possible_values_helper->seen[val - 1])
                 return false;
-            m_possible_values_helper->possible_values[val - 1] = true;
+            m_possible_values_helper->seen[val - 1] = true;
         }
         return true;
     }
@@ -84,9 +89,9 @@ namespace Sudoku
                 int val = m_grid[(box_row * 3 + i) * GRID_ROW_SIZE + (box_col * 3 + j)];
                 if(val == 0)
                     continue; // skip empty cells
-                if(m_seen[val - 1])
+                if(m_possible_values_helper->seen[val - 1])
                     return false;
-                m_possible_values_helper->possible_values[val - 1] = true;
+                m_possible_values_helper->seen[val - 1] = true;
             }
         }
         return true;
@@ -109,6 +114,10 @@ namespace Sudoku
 
     bool SudokuGrid::totalGridIsLegal() const
     {
+        // A grid is legal if all rows, columns, and squares are legal
+        // We do rows first for potential speed benefits, as we are
+        // guessing values by rows. (Not clear if this will actually help given other optimizations)
+        clearSeen();
         return allRowsAreLegal() && allColumnsAreLegal() && allSquaresAreLegal();
     }
     

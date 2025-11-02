@@ -29,6 +29,13 @@ namespace Sudoku
         return; // return an empty Grid if no solution found
     }
 
+    void SudokuGrid::solveWithValidityCheckFirst()
+    {
+        clearSeen();
+        if(!totalGridIsLegal())
+            return; // grid is invalid, cannot solve
+        solve();
+    }
     std::vector<SudokuGrid> SudokuGrid::helperGetNextGrids(IndexInt r, IndexInt c) const
     {
         /*

@@ -34,10 +34,7 @@ namespace Sudoku
 
     void SudokuGrid::getPossibleValuesForEasyWins(IndexInt r, IndexInt c) const
     {
-        std::fill(m_possible_values_helper->possible_values,
-            m_possible_values_helper->possible_values + 9,
-            true);
-
+        clearPossibleValues();
         // check the row
         for(int col = 0; col < 9; ++col)
         {
@@ -53,9 +50,8 @@ namespace Sudoku
         {
             int val = get(row, c);
             if(val != 0)
-            {
                 m_possible_values_helper->possible_values[val - 1] = false;
-            }
+            
         }
 
         // check the square
@@ -87,10 +83,7 @@ namespace Sudoku
                 m_possible_values_helper->single_possible_value = val;
             }
         }
-        if(count == 1)
-        {
-            m_possible_values_helper->there_is_only_one_possible_value = true;
-        }
+        m_possible_values_helper->there_is_only_one_possible_value = (count == 1);
     }
     
 } // namespace Sudoku

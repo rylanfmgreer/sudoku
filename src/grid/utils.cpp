@@ -69,13 +69,7 @@ namespace Sudoku
         }
         std::cout << lineBreak;
     }
-
-    void SudokuGrid::clearSeen() const
-    {
-        std::fill(m_possible_values_helper->seen,
-            m_possible_values_helper->seen + 9, false);
-    }
-
+    
     void SudokuGrid::copyFrom(const SudokuGrid& other)
     {
         other.putValuesIntoArray(m_grid);
