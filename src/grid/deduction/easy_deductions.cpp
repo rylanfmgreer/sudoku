@@ -2,7 +2,7 @@
 
 namespace Sudoku
 {
-    void SudokuGrid::fill_in_easy_wins()
+    void SudokuGrid::easyWins()
     {
         /*
         This function fills in easy wins for the Sudoku grid by looking for cells
@@ -18,8 +18,8 @@ namespace Sudoku
                 {
                     if(get(r, c)== 0)
                     {
-                        get_possible_values(r, c);
-                        determine_if_there_is_a_single_possible_value();
+                        getPossibleValuesForEasyWins(r, c);
+                        determineIfThereIsASinglePossibleValueAndSaveIt();
                         if(m_there_is_only_one_possible_value)
                         {
                             set(r, c, m_single_possible_value);

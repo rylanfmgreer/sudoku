@@ -6,6 +6,6 @@
 
 namespace Sudoku
 {
-    std::vector<SudokuGrid> read_grids_from_file(const char* filename);
+    std::vector<SudokuGrid> readGridsFromFile(const char* filename);
 } // namespace Sudoku
 #endif

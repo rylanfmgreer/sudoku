@@ -15,12 +15,12 @@ namespace Sudoku
             std::cout << std::endl;
         }
     }
-    void SudokuGrid::clear_seen()
+    void SudokuGrid::clearSeen()
     {
         std::fill(m_seen, m_seen + 9, false);
     }
 
-    void SudokuGrid::copy_from(const SudokuGrid& other)
+    void SudokuGrid::copyFrom(const SudokuGrid& other)
     {
         std::copy(other.m_grid, other.m_grid + N_GRID_CELLS, m_grid);
     }

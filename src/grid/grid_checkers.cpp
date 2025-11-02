@@ -2,12 +2,12 @@
 
 namespace Sudoku
 {
-    bool SudokuGrid::is_solved()
+    bool SudokuGrid::isSolved()
     {
-        return no_zero_entries() && grid_is_ok();
+        return noZeroEntriesInThisGrid() && totalGridIsLegal();
     }
 
-    bool SudokuGrid::no_zero_entries() const
+    bool SudokuGrid::noZeroEntriesInThisGrid() const
     {
         for(int idx = 0; idx < N_GRID_CELLS; ++idx)
         {
@@ -16,9 +16,9 @@ namespace Sudoku
         }
         return true;
     }
-    bool SudokuGrid::this_row_is_ok(int r)
+    bool SudokuGrid::thisRowIsLegal(int r)
     {
-        clear_seen();
+        clearSeen();
         for(int idx = r * GRID_ROW_SIZE; idx < (r + 1) * GRID_ROW_SIZE; ++idx)
         {
             int val = m_grid[idx];
@@ -31,19 +31,19 @@ namespace Sudoku
         return true;
     }
 
-    bool SudokuGrid::all_rows_are_ok()
+    bool SudokuGrid::allRowsAreLegal()
     {
         for(int row = 0; row < 9; ++row)
         {
-            if(!this_row_is_ok(row))
+            if(!thisRowIsLegal(row))
                 return false;
         }
         return true;
     }
 
-    bool SudokuGrid::this_column_is_ok(int c)
+    bool SudokuGrid::thisColumnIsLegal(int c)
     {
-        clear_seen();
+        clearSeen();
         for(int row = 0; row < 9; ++row)
         {
             int val = m_grid[row * GRID_ROW_SIZE + c];
@@ -56,19 +56,19 @@ namespace Sudoku
         return true;
     }
 
-    bool SudokuGrid::all_columns_are_ok()
+    bool SudokuGrid::allColumnsAreLegal()
     {
         for(int col = 0; col < 9; ++col)
         {
-            if(!this_column_is_ok(col))
+            if(!thisColumnIsLegal(col))
                 return false;
         }
         return true;
     }
 
-    bool SudokuGrid::this_square_is_ok(int r, int c)
+    bool SudokuGrid::thisSquareIsLegal(int r, int c)
     {
-        clear_seen();
+        clearSeen();
         // box_row and box_col are the index of what box we're checking
         int box_row = r / 3;
         int box_col = c / 3;
@@ -87,7 +87,7 @@ namespace Sudoku
         return true;
     }
 
-    bool SudokuGrid::all_squares_are_ok()
+    bool SudokuGrid::allSquaresAreLegal()
     {
         for(int box_row = 0; box_row < 3; ++box_row)
         {
@@ -95,16 +95,16 @@ namespace Sudoku
             {
                 int start_r = box_row * 3;
                 int start_c = box_col * 3;
-                if(!this_square_is_ok(start_r, start_c))
+                if(!thisSquareIsLegal(start_r, start_c))
                     return false;
             }
         }
         return true;
     }
 
-    bool SudokuGrid::grid_is_ok()
+    bool SudokuGrid::totalGridIsLegal()
     {
-        return all_rows_are_ok() && all_columns_are_ok() && all_squares_are_ok();
+        return allRowsAreLegal() && allColumnsAreLegal() && allSquaresAreLegal();
     }
     
 } // namespace Sudoku

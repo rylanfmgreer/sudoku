@@ -12,32 +12,32 @@ namespace Sudoku
     void SudokuGrid::solve()
     {
         // If already solved, return
-        if(is_solved())
+        if(isSolved())
             return;
 
         // just putting in all the easy wins first significantly speeds up the solving process
-        fill_in_easy_wins();
+        easyWins();
 
         // now we apply a backtracking algo where we try all possible values for the next empty cell
         // and then all of them for the next cell, etc try to solve from there
-        std::vector<SudokuGrid> next_grids = get_next_grids();
+        std::vector<SudokuGrid> next_grids = getNextGrids();
         for(auto& next_grid : next_grids)
         {
             next_grid.solve();
-            if(next_grid.is_solved())
+            if(next_grid.isSolved())
             {
-                copy_from(next_grid);
+                copyFrom(next_grid);
                 return;
             }
         }
         return; // return an empty grid if no solution found
     }
 
-    std::vector<SudokuGrid> SudokuGrid::_get_next_grids(int r, int c)
+    std::vector<SudokuGrid> SudokuGrid::helperGetNextGrids(int r, int c)
     {
         std::vector<SudokuGrid> next_grids;
         next_grids.reserve(9);
-        get_possible_values(r, c);
+        getPossibleValuesForEasyWins(r, c);
         for(int val = 1; val <= 9; ++val)
         {
             if(!m_possible_values[val - 1])
@@ -52,7 +52,7 @@ namespace Sudoku
         return next_grids;
     }
 
-    void SudokuGrid::find_next_empty_cell()
+    void SudokuGrid::findNextEmptyCell()
     {
         for(int r = 0; r < 9; ++r)
         {
@@ -70,12 +70,12 @@ namespace Sudoku
         m_next_empty_col = -1;
     }
 
-    std::vector<SudokuGrid> SudokuGrid::get_next_grids(int r, int c)
+    std::vector<SudokuGrid> SudokuGrid::getNextGrids(int r, int c)
     {
         if(r == -1 || c == -1)
         {
             SudokuGrid temp_grid(*this);
-            temp_grid.find_next_empty_cell();
+            temp_grid.findNextEmptyCell();
             if(temp_grid.m_next_empty_row == -1 || temp_grid.m_next_empty_col == -1)
             {
                 return std::vector<SudokuGrid>();
@@ -83,16 +83,16 @@ namespace Sudoku
             r = temp_grid.m_next_empty_row;
             c = temp_grid.m_next_empty_col;
         }
-        return _get_next_grids(r, c);
+        return helperGetNextGrids(r, c);
     }
 
 
-    bool SudokuGrid::everything_is_ok(int r, int c)
+    bool SudokuGrid::thisGridIsLegal(int r, int c)
     {
-        return this_row_is_ok(r) && this_column_is_ok(c) && this_square_is_ok(r, c);
+        return thisRowIsLegal(r) && thisColumnIsLegal(c) && thisSquareIsLegal(r, c);
     }
 
-    void SudokuGrid::determine_if_there_is_a_single_possible_value()
+    void SudokuGrid::determineIfThereIsASinglePossibleValueAndSaveIt()
     {
         m_there_is_only_one_possible_value = false;
         m_single_possible_value = -1;
@@ -111,7 +111,7 @@ namespace Sudoku
         }
     }
 
-    void SudokuGrid::get_possible_values(int r, int c)
+    void SudokuGrid::getPossibleValuesForEasyWins(int r, int c)
     {
         std::fill(m_possible_values, m_possible_values + 9, true);
 

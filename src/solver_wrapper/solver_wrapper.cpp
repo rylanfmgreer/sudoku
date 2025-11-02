@@ -5,44 +5,46 @@
 
 namespace Sudoku
 {
-    long int current_time()
+    long int currentTimeInMilliseconds()
     {
-        return std::chrono::high_resolution_clock::now().time_since_epoch().count();
+        auto now = std::chrono::high_resolution_clock::now();
+        auto now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(now);
+        return now_ms.time_since_epoch().count();
     }
 
-    bool solve_single_grid(SudokuGrid& grid, bool verbose)
+    bool solveSingleGrid(SudokuGrid& grid, bool verbose)
     {
-        long int start_time = current_time();
+        long int start_time = currentTimeInMilliseconds();
         grid.solve();
-        long int end_time = current_time();
+        long int end_time = currentTimeInMilliseconds();
         if (verbose)
         {
-            std::cout << "Grid solved: " << grid.is_solved() << std::endl;
-            std::cout << "Time taken: " << (end_time - start_time) << " microseconds" << std::endl;
+            std::cout << "Grid solved: " << grid.isSolved() << std::endl;
+            std::cout << "Time taken: " << (end_time - start_time) << " milliseconds" << std::endl;
             std::cout << "Grid state:" << std::endl;
             grid.print();
         }
-        return grid.is_solved();
+        return grid.isSolved();
     }
 
-    int solve_vector_of_grids(std::vector<SudokuGrid>& grids, bool verbose)
+    int solveVectorOfGrids(std::vector<SudokuGrid>& grids, bool verbose)
     {
         int solved_count = 0;
-        long int total_start_time = current_time();
+        long int total_start_time = currentTimeInMilliseconds();
         for(auto& grid : grids)
-            solved_count += solve_single_grid(grid, verbose);
-        long int total_end_time = current_time();
+            solved_count += solveSingleGrid(grid, verbose);
+        long int total_end_time = currentTimeInMilliseconds();
         if (verbose)
         {
             std::cout << "Total grids solved: " << solved_count << " out of " << grids.size() << std::endl;
-            std::cout << "Total time taken: " << (total_end_time - total_start_time) << " microseconds" << std::endl;
+            std::cout << "Total time taken: " << (total_end_time - total_start_time) << " milliseconds" << std::endl;
         }
         return solved_count;
     }
 
-    int solve_grids_from_file(const char* filename, bool verbose)
+    int solveGridsFromFile(const char* filename, bool verbose)
     {
-        std::vector<SudokuGrid> grids = read_grids_from_file(filename);
-        return solve_vector_of_grids(grids, verbose);
+        std::vector<SudokuGrid> grids = readGridsFromFile(filename);
+        return solveVectorOfGrids(grids, verbose);
     }
 } // namespace Sudoku

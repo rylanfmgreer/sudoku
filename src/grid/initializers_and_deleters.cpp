@@ -12,7 +12,7 @@ namespace Sudoku
     m_next_empty_col(other.m_next_empty_col)
     {
         m_grid = new int[N_GRID_CELLS];
-        copy_from(other);
+        copyFrom(other);
     }
 
     SudokuGrid::~SudokuGrid()
