@@ -8,12 +8,12 @@
 
 namespace Sudoku
 {
-    std::ostream& bold_on(std::ostream& os)
+    std::ostream& boldAndBlueText(std::ostream& os)
     {
-        return os << "\e[1m";
+        return os << "\e[1;34m";
     }
 
-    std::ostream& bold_off(std::ostream& os)
+    std::ostream& normalText(std::ostream& os)
     {
         return os << "\e[0m";
     }
@@ -44,8 +44,8 @@ namespace Sudoku
         are printed in bold.
         There are also pipes to indicate 3x3 subgrid boundaries for better readability.
         */
-        auto makeOutputBold = []() { std::cout << bold_on; };
-        auto makeOutputNotBold = []() { std::cout << bold_off; };
+        auto makeOutputBold = []() { std::cout << boldAndBlueText; };
+        auto makeOutputNotBold = []() { std::cout << normalText; };
         std::cout << std::endl;
         for(int r = 0; r < 9; ++r)
         {
