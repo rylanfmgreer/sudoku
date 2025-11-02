@@ -11,7 +11,7 @@ namespace Sudoku
     */
     const std::string boldBlueTextCode = "\e[1;34m";
     const std::string normalTextCode = "\e[0m";
-    const std::string lineSeparator = "-------------------------\n";
+    const std::string lineSeparator = "------+-------+------\n";
     const std::string lineBreak = "\n";
 
     /*

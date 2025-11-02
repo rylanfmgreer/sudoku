@@ -58,11 +58,12 @@ namespace Sudoku
                 else
                     std::cout << " ";
             }
-            std::cout << std::endl;
+            std::cout << lineBreak;
             if(r == 2 || r == 5) // print horizontal separator
             {
-                std::cout << lineSeparator << lineBreak;
+                std::cout << lineSeparator;
             }
+
         }
         std::cout << lineBreak;
     }
