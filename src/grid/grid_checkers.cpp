@@ -28,15 +28,18 @@ namespace Sudoku
     
     bool SudokuGrid::thisRowIsLegal(IndexInt r) const
     {
+        /*
+            Check if the current row is legal by ensuring all numbers are unique
+        */
         clearSeen();
         for(int idx = r * GRID_ROW_SIZE; idx < (r + 1) * GRID_ROW_SIZE; ++idx)
         {
             int val = m_grid[idx];
             if(val == 0)
                 continue; // skip empty cells
-            if(m_possible_values_helper->seen[val - 1])
+            if(m_possible_values_helper.seen[val - 1])
                 return false;
-            m_possible_values_helper->seen[val - 1] = true;
+            m_possible_values_helper.seen[val - 1] = true;
         }
         return true;
     }
@@ -59,9 +62,9 @@ namespace Sudoku
             ValueInt val = m_grid[row * GRID_ROW_SIZE + c];
             if(val == 0)
                 continue; // skip empty cells
-            if(m_possible_values_helper->seen[val - 1])
+            if(m_possible_values_helper.seen[val - 1])
                 return false;
-            m_possible_values_helper->seen[val - 1] = true;
+            m_possible_values_helper.seen[val - 1] = true;
         }
         return true;
     }
@@ -89,9 +92,9 @@ namespace Sudoku
                 int val = m_grid[(box_row * 3 + i) * GRID_ROW_SIZE + (box_col * 3 + j)];
                 if(val == 0)
                     continue; // skip empty cells
-                if(m_possible_values_helper->seen[val - 1])
+                if(m_possible_values_helper.seen[val - 1])
                     return false;
-                m_possible_values_helper->seen[val - 1] = true;
+                m_possible_values_helper.seen[val - 1] = true;
             }
         }
         return true;

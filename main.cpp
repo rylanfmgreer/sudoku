@@ -5,10 +5,9 @@
 
 int main(int argc, char** argv)
 {
+    // default filename
     const char* filename = "grids.txt";
-    if(argc > 1)
-        filename = argv[1];
-    
+    if(argc > 1) filename = argv[1];
     int solved_count = Sudoku::solveGridsFromFile(filename, true);
     return 0;
 }

@@ -2,15 +2,13 @@
 namespace Sudoku
 {
     SudokuGrid::SudokuGrid()
-    : m_next_empty_cell_helper(new SudokuGridNextEmptyCellHelper()),
-      m_possible_values_helper(new SudokuGridPossibleValuesHelper())
     {
         m_grid = new ValueInt[N_GRID_CELLS];
     }
 
     SudokuGrid::SudokuGrid(const SudokuGrid& other):
-    m_next_empty_cell_helper(new SudokuGridNextEmptyCellHelper(*other.m_next_empty_cell_helper)),
-    m_possible_values_helper(new SudokuGridPossibleValuesHelper(*other.m_possible_values_helper))
+    m_next_empty_cell_helper(other.m_next_empty_cell_helper),
+    m_possible_values_helper(other.m_possible_values_helper)
     {
         m_grid = new ValueInt[N_GRID_CELLS];
         copyFrom(other);

@@ -20,9 +20,9 @@ namespace Sudoku
                     {
                         getPossibleValuesForEasyWins(r, c);
                         determineIfThereIsASinglePossibleValueAndSaveIt();
-                        if(m_possible_values_helper->there_is_only_one_possible_value)
+                        if(m_possible_values_helper.there_is_only_one_possible_value)
                         {
-                            set(r, c, m_possible_values_helper->single_possible_value);
+                            set(r, c, m_possible_values_helper.single_possible_value);
                             progress = true;
                         }
                     }
@@ -41,7 +41,7 @@ namespace Sudoku
             int val = get(r, col);
             if(val != 0)
             {
-                m_possible_values_helper->possible_values[val - 1] = false;
+                m_possible_values_helper.possible_values[val - 1] = false;
             }
         }
 
@@ -50,7 +50,7 @@ namespace Sudoku
         {
             int val = get(row, c);
             if(val != 0)
-                m_possible_values_helper->possible_values[val - 1] = false;
+                m_possible_values_helper.possible_values[val - 1] = false;
             
         }
 
@@ -64,7 +64,7 @@ namespace Sudoku
                 int val = get(start_row + dr, start_col + dc);
                 if(val != 0)
                 {
-                    m_possible_values_helper->possible_values[val - 1] = false;
+                    m_possible_values_helper.possible_values[val - 1] = false;
                 }
             }
         }
@@ -72,18 +72,18 @@ namespace Sudoku
 
     void SudokuGrid::determineIfThereIsASinglePossibleValueAndSaveIt()
     {
-        m_possible_values_helper->there_is_only_one_possible_value = false;
-        m_possible_values_helper->single_possible_value = -1;
+        m_possible_values_helper.there_is_only_one_possible_value = false;
+        m_possible_values_helper.single_possible_value = -1;
         int count = 0;
         for(IndexInt val = 1; val <= 9; ++val)
         {
-            if(m_possible_values_helper->possible_values[val - 1])
+            if(m_possible_values_helper.possible_values[val - 1])
             {
                 ++count;
-                m_possible_values_helper->single_possible_value = val;
+                m_possible_values_helper.single_possible_value = val;
             }
         }
-        m_possible_values_helper->there_is_only_one_possible_value = (count == 1);
+        m_possible_values_helper.there_is_only_one_possible_value = (count == 1);
     }
     
 } // namespace Sudoku

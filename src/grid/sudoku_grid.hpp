@@ -4,40 +4,11 @@
 
 #include <vector>
 #include <memory>
+#include "helper_structs/helper_structs.hpp"
 
 namespace Sudoku
 {
-    struct SudokuGridNextEmptyCellHelper
-    {
-        std::size_t next_empty_row;
-        std::size_t next_empty_col;
-        SudokuGridNextEmptyCellHelper(const SudokuGridNextEmptyCellHelper& other)
-        : next_empty_row(other.next_empty_row), next_empty_col(other.next_empty_col) {}
-        SudokuGridNextEmptyCellHelper() : next_empty_row(-1), next_empty_col(-1) {}
 
-    };
-
-    struct SudokuGridPossibleValuesHelper
-    {
-        bool seen[9];
-        bool possible_values[9];
-        bool there_is_only_one_possible_value;
-        int single_possible_value;
-        SudokuGridPossibleValuesHelper(const SudokuGridPossibleValuesHelper& other)
-        : there_is_only_one_possible_value(other.there_is_only_one_possible_value),
-          single_possible_value(other.single_possible_value)
-        {
-            std::copy(other.seen, other.seen + 9, seen);
-            std::copy(other.possible_values, other.possible_values + 9, possible_values);
-        }
-
-        SudokuGridPossibleValuesHelper()
-        : there_is_only_one_possible_value(false), single_possible_value(-1)
-        {
-            std::fill(seen, seen + 9, false);
-            std::fill(possible_values, possible_values + 9, true);
-        }
-    };
 
     const int N_GRID_CELLS = 81;
     const int GRID_ROW_SIZE = 9;
@@ -86,8 +57,8 @@ namespace Sudoku
         bool allSquaresAreLegal() const;
         bool totalGridIsLegal() const;
         bool thisGridIsLegal(IndexInt r, IndexInt c) const;
-        inline void clearSeen() const { std::fill(m_possible_values_helper->seen, m_possible_values_helper->seen + 9, false); }
-        inline void clearPossibleValues() const { std::fill(m_possible_values_helper->possible_values, m_possible_values_helper->possible_values + 9, true); }
+        inline void clearSeen() const { std::fill(m_possible_values_helper.seen, m_possible_values_helper.seen + 9, false); }
+        inline void clearPossibleValues() const { std::fill(m_possible_values_helper.possible_values, m_possible_values_helper.possible_values + 9, true); }
         bool noZeroEntriesInThisGrid() const;
 
         void determineIfThereIsASinglePossibleValueAndSaveIt();
@@ -99,9 +70,9 @@ namespace Sudoku
         void easyWins();
         void getPossibleValuesForEasyWins(IndexInt r, IndexInt c) const;
 
-        // we consider a function const even if it modifies these data in these helpers
-        std::shared_ptr<SudokuGridNextEmptyCellHelper> m_next_empty_cell_helper;
-        std::shared_ptr<SudokuGridPossibleValuesHelper> m_possible_values_helper;
+        // mutable allows these workspace variables to be modified even in const functions
+        mutable SudokuGridNextEmptyCellHelper m_next_empty_cell_helper;
+        mutable SudokuGridPossibleValuesHelper m_possible_values_helper;
     };
 
 } // namespace Sudoku
