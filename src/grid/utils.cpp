@@ -9,14 +9,13 @@
 
 namespace Sudoku
 {
-    std::ostream& groundTruthTextMode(std::ostream& os)
+    void setGroundTruthTextMode()
     {
-        return os << boldBlueTextCode;
+        std::cout << boldBlueTextCode;
     }
-
-    std::ostream& normalText(std::ostream& os)
+    void setNormalTextMode()
     {
-        return os << normalTextCode;
+        std::cout << normalTextCode;
     }
 
     void SudokuGrid::putValuesIntoArray(Grid outputArr) const
@@ -45,17 +44,16 @@ namespace Sudoku
         are printed in bold.
         There are also pipes to indicate 3x3 subgrid boundaries for better readability.
         */
-        auto makeOutputBold = []() { std::cout << groundTruthTextMode; };
-        auto makeOutputNotBold = []() { std::cout << normalText; };
+
         std::cout << std::endl;
         for(int r = 0; r < 9; ++r)
         {
             for(int c = 0; c < 9; ++c)
             {
                 if(groundTruth[r * GRID_ROW_SIZE + c] != 0)
-                    makeOutputBold();
+                    setGroundTruthTextMode();
                 std::cout << get(r, c);
-                makeOutputNotBold();
+                setNormalTextMode();
                 if(c == 2 || c == 5)
                     std::cout << " | ";
                 else
@@ -69,7 +67,7 @@ namespace Sudoku
         }
         std::cout << lineBreak;
     }
-    
+
     void SudokuGrid::copyFrom(const SudokuGrid& other)
     {
         other.putValuesIntoArray(m_grid);

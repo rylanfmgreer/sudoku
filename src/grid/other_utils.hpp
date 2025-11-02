@@ -6,11 +6,22 @@
 
 namespace Sudoku
 {
+    /*
+        String consts (including colour codes for terminal output)
+    */
     const std::string boldBlueTextCode = "\e[1;34m";
     const std::string normalTextCode = "\e[0m";
     const std::string lineSeparator = "-------------------------\n";
     const std::string lineBreak = "\n";
-    std::ostream& groundTruthTextMode(std::ostream& os);
-    std::ostream& normalText(std::ostream& os);
+
+    /*
+        Set the text mode to ground truth (bold blue).
+    */
+    void setGroundTruthTextMode();
+    
+    /*
+        Set the text mode back to normal.
+    */
+    void setNormalTextMode();
 } // namespace Sudoku
 #endif
