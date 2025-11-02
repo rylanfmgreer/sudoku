@@ -4,7 +4,7 @@ namespace Sudoku
 {
     bool SudokuGrid::isSolved() const
     {
-        return noZeroEntriesInThisGrid() && totalGridIsLegal();
+        return allGridEntriesAreFilledIn() && totalGridIsLegal();
     }
 
     bool SudokuGrid::thisGridIsLegal(IndexInt r, IndexInt c) const
@@ -13,7 +13,7 @@ namespace Sudoku
         return thisRowIsLegal(r) && thisColumnIsLegal(c) && thisSquareIsLegal(r, c);
     }
 
-    bool SudokuGrid::noZeroEntriesInThisGrid() const
+    bool SudokuGrid::allGridEntriesAreFilledIn() const
     {
         // Check if there are any zero entries in the grid
         // We start from the back of the grid because in solving, 
@@ -28,9 +28,7 @@ namespace Sudoku
     
     bool SudokuGrid::thisRowIsLegal(IndexInt r) const
     {
-        /*
-            Check if the current row is legal by ensuring all numbers are unique
-        */
+        /// Check if the current row is legal by ensuring all numbers are unique
         clearSeen();
         for(int idx = r * GRID_ROW_SIZE; idx < (r + 1) * GRID_ROW_SIZE; ++idx)
         {

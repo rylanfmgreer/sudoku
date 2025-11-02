@@ -4,10 +4,10 @@ namespace Sudoku
 {
     void SudokuGrid::easyWins()
     {
-        /*
-        This function fills in easy wins for the Sudoku Grid by looking for cells
-        that have only one possible value and assigning that value to the cell.
-        */
+        /**
+         * This function fills in easy wins for the Sudoku Grid by looking for cells
+         * that have only one possible value and assigning that value to the cell.
+         */
         bool progress = true;
         while(progress)
         {
@@ -63,9 +63,7 @@ namespace Sudoku
             {
                 int val = get(start_row + dr, start_col + dc);
                 if(val != 0)
-                {
-                    m_possible_values_helper.possible_values[val - 1] = false;
-                }
+                    m_possible_values_helper.possible_values[val - 1] = false; 
             }
         }
     }
