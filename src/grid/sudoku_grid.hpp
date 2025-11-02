@@ -23,11 +23,15 @@ namespace Sudoku
         void solve();
         bool isSolved();
         void print() const;
+        void printWithGroundTruth(int* groundTruth) const;
 
         // accessors
         int& get(int r, int c) const;
         int& operator()(int r, int c) const { return get(r, c); }
         void set(int r, int c, int val);
+
+        // utilities that may be useful externally
+        void putValuesIntoArray(int* outputArr) const;
 
 
         private:

@@ -15,6 +15,9 @@ namespace Sudoku
     bool solveSingleGrid(SudokuGrid& grid, bool verbose)
     {
         long int start_time = currentTimeInMilliseconds();
+        int groundTruthArr[N_GRID_CELLS];
+        grid.putValuesIntoArray(groundTruthArr);
+
         grid.solve();
         long int end_time = currentTimeInMilliseconds();
         if (verbose)
@@ -22,7 +25,7 @@ namespace Sudoku
             std::cout << "Grid solved: " << grid.isSolved() << std::endl;
             std::cout << "Time taken: " << (end_time - start_time) << " milliseconds" << std::endl;
             std::cout << "Grid state:" << std::endl;
-            grid.print();
+            grid.printWithGroundTruth(groundTruthArr);
         }
         return grid.isSolved();
     }

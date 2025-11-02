@@ -31,6 +31,10 @@ namespace Sudoku
 
     std::vector<SudokuGrid> SudokuGrid::helperGetNextGrids(int r, int c)
     {
+        /*
+            This function generates all possible next grids by trying all possible values
+            for the given empty cell (r, c) and returns them in a vector.
+        */
         std::vector<SudokuGrid> next_grids;
         next_grids.reserve(9);
         getPossibleValuesForEasyWins(r, c);
@@ -50,11 +54,12 @@ namespace Sudoku
 
     void SudokuGrid::findNextEmptyCell()
     {
+        m_next_empty_col = m_next_empty_row = -1;
         for(int r = 0; r < 9; ++r)
         {
             for(int c = 0; c < 9; ++c)
             {
-                if(get(r, c)  == 0)
+                if(get(r, c) == 0)
                 {
                     m_next_empty_row = r;
                     m_next_empty_col = c;
@@ -62,8 +67,6 @@ namespace Sudoku
                 }
             }
         }
-        m_next_empty_row = -1;
-        m_next_empty_col = -1;
     }
 
     std::vector<SudokuGrid> SudokuGrid::getNextGrids(int r, int c)
