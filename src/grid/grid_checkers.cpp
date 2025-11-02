@@ -6,6 +6,11 @@ namespace Sudoku
     {
         return noZeroEntriesInThisGrid() && totalGridIsLegal();
     }
+    
+    bool SudokuGrid::thisGridIsLegal(int r, int c)
+    {
+        return thisRowIsLegal(r) && thisColumnIsLegal(c) && thisSquareIsLegal(r, c);
+    }
 
     bool SudokuGrid::noZeroEntriesInThisGrid() const
     {

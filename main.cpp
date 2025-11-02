@@ -6,6 +6,6 @@
 int main()
 {
     const char* filename = "grids.txt";
-    int solved_count = Sudoku::solve_grids_from_file(filename, true);
+    int solved_count = Sudoku::solveGridsFromFile(filename, true);
     return 0;
 }

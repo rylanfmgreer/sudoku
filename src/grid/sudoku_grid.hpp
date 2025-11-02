@@ -62,8 +62,10 @@ namespace Sudoku
         // deduction algorithms
         // currently only the simple one is implemented, but more can be added later
         bool m_possible_values[9];
+        void applyAllDeductiveReasoning();
         void easyWins();
         void getPossibleValuesForEasyWins(int r, int c);
     };
+
 } // namespace Sudoku
 #endif //_SUDOKU_GRID_HPP_

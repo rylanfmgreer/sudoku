@@ -6,6 +6,7 @@ namespace Sudoku
     {
         return m_grid[r * GRID_ROW_SIZE + c];
     }
+    
     void SudokuGrid::set(int r, int c, int val)
     {
         get(r, c) = val;
