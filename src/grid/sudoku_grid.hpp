@@ -9,10 +9,6 @@
 
 namespace Sudoku
 {
-    const IndexInt N_GRID_CELLS = 81;
-    const IndexInt GRID_ROW_SIZE = 9;
-    typedef ValueInt* Grid;
-
 
     class SudokuGrid
     {

@@ -5,9 +5,6 @@
 
 namespace Sudoku
 {
-    typedef short int IndexInt;
-    typedef short int ValueInt;
-
     struct SudokuGridNextEmptyCellHelper
     {
         IndexInt next_empty_row;
@@ -20,18 +17,16 @@ namespace Sudoku
 
     struct SudokuGridPossibleValuesHelper
     {
-        bool seen[9];
-        bool possible_values[9];
+        bool seen[GRID_ROW_SIZE];
+        bool possible_values[GRID_ROW_SIZE];
         bool there_is_only_one_possible_value;
         ValueInt single_possible_value;
         SudokuGridPossibleValuesHelper(const SudokuGridPossibleValuesHelper& other)
         : there_is_only_one_possible_value(other.there_is_only_one_possible_value),
           single_possible_value(other.single_possible_value)
         {}
-
-        SudokuGridPossibleValuesHelper()
-        : there_is_only_one_possible_value(false), single_possible_value(-1)
-        {}
+        // no need to initialize arrays here
+        SudokuGridPossibleValuesHelper(){}
     };
 } // namespace Sudoku
 
